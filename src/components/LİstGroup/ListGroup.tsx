@@ -1,5 +1,6 @@
 import { useState } from "react";
 import styles from "./ListGroup.module.css";
+import { FaTruck } from "react-icons/fa6";
 
 interface Props {
   items: string[];
@@ -13,6 +14,7 @@ function ListGroup({ items = [], heading, onSelectItem }: Props) {
   return (
     <>
       <h1>{heading}</h1>
+      <FaTruck size={196} />
       {items.length === 0 ? (
         <p>No items found</p>
       ) : (
