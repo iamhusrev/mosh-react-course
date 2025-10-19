@@ -1,16 +1,15 @@
-import { useState } from "react";
 import "./App.css";
-import Button from "./components/Button";
-import Alert from "./components/Alert";
+import ListGroup from "./components/LİstGroup/ListGroup";
 
 function App() {
-  const [showAlert, setShowAlert] = useState(false);
 
   return (
     <>
-      <Button color='warning' children="Click Me" onClick={() => setShowAlert(!showAlert)} />
-
-      {showAlert && <Alert>This is an alert</Alert>}
+      <ListGroup
+        items={["New York", "San Francisco", "Los Angeles"]}
+        heading="Cities"
+        onSelectItem={(item) => console.log(item)}
+      />
     </>
   );
 }
