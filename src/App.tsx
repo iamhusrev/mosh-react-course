@@ -4,12 +4,22 @@ import "./App.css";
 import Button from "./components/Button/Button";
 import Cart from "./components/Cart";
 import ExpandableText from "./components/ExpandableText";
-import FormWithUseRef from "./components/FormWithUseRef";
-import FormWithUseState from "./components/FormWithUseState";
+import FormWithUseRef from "./components/Forms/FormWithUseRef";
+import FormWithUseState from "./components/Forms/FormWithUseState";
 import Like from "./components/Like/Like";
 import ListGroup from "./components/LİstGroup/ListGroup";
 import NavBar from "./components/NavBar";
-import FormWithUseForm from "./components/FormWithUseForm";
+import FormWithUseForm from "./components/Forms/FormWithUseForm";
+import ExpenseList from "./expense-tracker/compnents/ExpenseList";
+import { fakeExpenses } from "./expense-tracker/expenses";
+import ExpenseFilter from "./expense-tracker/compnents/ExpenseFilter";
+import ExpenseForm from "./expense-tracker/compnents/ExpenseForm";
+
+export interface ExpenseFormData {
+  description: string;
+  amount: number;
+  category: string;
+}
 
 function App() {
   const [bugs, setBugs] = useState([
@@ -37,8 +47,46 @@ function App() {
     );
   };
 
+  const [expenses, setExpenses] = useState(fakeExpenses);
+  const [selectedCategory, setSelectedCategory] = useState("All Categories");
+
+  const visibleExpenses = expenses.filter((expense) => {
+    if (selectedCategory === "All Categories") return true;
+    return expense.category === selectedCategory;
+  });
+
   return (
     <div className="container">
+      {/* Expense List Section */}
+      <section className="mb-5">
+        <h2 className="mb-3">Expense List Section</h2>
+        <p className="text-muted mb-3">A simple expense list example</p>
+        <div className="mb-5">
+          {/* Expense Form would go here */}
+          <ExpenseForm
+            onSubmit={(expense) =>
+              setExpenses([
+                ...expenses,
+                { ...expense, id: expenses.length + 1 },
+              ])
+            }
+          />
+        </div>
+        <div className="mb-3">
+          <ExpenseFilter
+            onSelectCategory={(category) => setSelectedCategory(category)}
+          />
+        </div>
+        <ExpenseList
+          expenses={visibleExpenses}
+          onDelete={(id) => {
+            setExpenses(expenses.filter((expense) => expense.id !== id));
+          }}
+        />
+      </section>
+
+      <hr className="my-4" />
+
       {/* Form Section With Use Form */}
       <section className="mb-5">
         <h2 className="mb-3">Form Section With Use Form</h2>
