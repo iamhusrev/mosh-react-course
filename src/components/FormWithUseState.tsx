@@ -3,7 +3,7 @@ import { useState, type FormEvent } from "react";
 const FormWithUseState = () => {
   const [person, setPerson] = useState({
     name: "",
-    age: "",
+    age: 0,
   });
 
   const handleSubmit = (event: FormEvent) => {
