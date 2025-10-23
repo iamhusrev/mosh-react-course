@@ -1,12 +1,15 @@
+import { produce } from "immer";
 import { useState } from "react";
 import "./App.css";
 import Button from "./components/Button/Button";
-import Like from "./components/Like/Like";
-import ListGroup from "./components/LİstGroup/ListGroup";
-import { produce } from "immer";
-import NavBar from "./components/NavBar";
 import Cart from "./components/Cart";
 import ExpandableText from "./components/ExpandableText";
+import FormWithUseRef from "./components/FormWithUseRef";
+import FormWithUseState from "./components/FormWithUseState";
+import Like from "./components/Like/Like";
+import ListGroup from "./components/LİstGroup/ListGroup";
+import NavBar from "./components/NavBar";
+import FormWithUseForm from "./components/FormWithUseForm";
 
 function App() {
   const [bugs, setBugs] = useState([
@@ -35,7 +38,95 @@ function App() {
   };
 
   return (
-    <div className="container my-5">
+    <div className="container">
+      {/* Form Section With Use Form */}
+      <section className="mb-5">
+        <h2 className="mb-3">Form Section With Use Form</h2>
+        <p className="text-muted mb-3">A simple form example</p>
+        <FormWithUseForm />
+      </section>
+
+      <hr className="my-4" />
+      {/* Form Section With Use Ref */}
+      <section className="mb-5">
+        <h2 className="mb-3">Form Section With Use Ref</h2>
+        <p className="text-muted mb-3">A simple form example</p>
+        <FormWithUseRef />
+      </section>
+
+      <hr className="my-4" />
+      {/* Form Section With Use State */}
+      <section className="mb-5">
+        <h2 className="mb-3">Form Section With Use State</h2>
+        <p className="text-muted mb-3">A simple form example</p>
+        <FormWithUseState />
+      </section>
+
+      <hr className="my-4" />
+
+      {/* Expandable Text Section */}
+
+      <section className="mb-5">
+        <h2 className="mb-3">Expandable Text Section</h2>
+        <p className="text-muted mb-3">A simple expandable text example</p>
+        <ExpandableText maxChars={50}>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do
+          eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad
+          minim veniam, quis nostrud exercitation ullamco laboris nisi ut
+          aliquip ex ea commodo consequat.
+        </ExpandableText>
+      </section>
+
+      <hr className="my-4" />
+      {/* NavBar Section */}
+      <section className="mb-5">
+        <h2 className="mb-3">NavBar Section</h2>
+        <p className="text-muted mb-3">A simple NavBar example</p>
+        <NavBar cartItemsCount={cartItems.length} />
+        {/* Cart Section */}
+        <Cart cartItems={cartItems} onClear={handleClearCart} />
+      </section>
+
+      <hr className="my-4" />
+      {/* Immer Section */}
+      <section className="mb-5">
+        <h2 className="mb-3">Immer State Management</h2>
+        <p className="text-muted mb-3">Managing state immutably with Immer</p>
+        <Button onClick={updateBugsWithImmer} color="Primary">
+          Add New Bugs
+        </Button>
+        <ul className="mt-3">
+          {bugs.map((bug) => (
+            <li key={bug.id}>
+              <strong>{bug.title}:</strong> {bug.description}
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      <hr className="my-4" />
+      {/* List Section */}
+      <section className="mb-5">
+        <h2 className="mb-3">Like</h2>
+        <p className="text-muted mb-3">Like Button</p>
+        <Like onClick={() => console.log("Like button clicked")} />
+      </section>
+
+      <hr className="my-4" />
+      {/* List Section */}
+      <section className="mb-5">
+        <h2 className="mb-3">List Group</h2>
+        <p className="text-muted mb-3">
+          Interactive list with selectable items
+        </p>
+        <ListGroup
+          items={["New York", "San Francisco", "Los Angeles"]}
+          heading="Cities"
+          onSelectItem={(item) => console.log(item)}
+        />
+      </section>
+
+      <hr className="my-4" />
       {/* Button Section */}
       <section className="mb-5">
         <h2 className="mb-3">Buttons</h2>
@@ -54,60 +145,6 @@ function App() {
           </Button>
         </div>
       </section>
-
-      <hr className="my-4" />
-
-      {/* List Section */}
-      <section className="mb-5">
-        <h2 className="mb-3">List Group</h2>
-        <p className="text-muted mb-3">
-          Interactive list with selectable items
-        </p>
-        <ListGroup
-          items={["New York", "San Francisco", "Los Angeles"]}
-          heading="Cities"
-          onSelectItem={(item) => console.log(item)}
-        />
-      </section>
-
-      <hr className="my-4" />
-
-      {/* List Section */}
-      <section className="mb-5">
-        <h2 className="mb-3">Like</h2>
-        <p className="text-muted mb-3">Like Button</p>
-        <Like onClick={() => console.log("Like button clicked")} />
-      </section>
-
-      <hr className="my-4" />
-
-      {/* Immer Section */}
-      <section className="mb-5">
-        <h2 className="mb-3">Immer State Management</h2>
-        <p className="text-muted mb-3">Managing state immutably with Immer</p>
-        <Button onClick={updateBugsWithImmer} color="Primary">
-          Add New Bugs
-        </Button>
-        <ul className="mt-3">
-          {bugs.map((bug) => (
-            <li key={bug.id}>
-              <strong>{bug.title}:</strong> {bug.description}
-            </li>
-          ))}
-        </ul>
-      </section>
-
-      {/* NavBar Section */}
-      <NavBar cartItemsCount={cartItems.length} />
-      {/* Cart Section */}
-      <Cart cartItems={cartItems} onClear={handleClearCart} />
-
-      <ExpandableText maxChars={50}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea
-        commodo consequat.
-      </ExpandableText>
     </div>
   );
 }
