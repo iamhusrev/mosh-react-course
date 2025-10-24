@@ -3,7 +3,6 @@ import apiClient from "./api-client";
 export interface User {
   id: number;
   name: string;
-  username: string;
   email: string;
 }
 

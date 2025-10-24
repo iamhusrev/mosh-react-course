@@ -1,25 +1,20 @@
 import { produce } from "immer";
-import { use, useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import Button from "./components/Button/Button";
 import Cart from "./components/Cart";
 import ExpandableText from "./components/ExpandableText";
+import FormWithUseForm from "./components/Forms/FormWithUseForm";
 import FormWithUseRef from "./components/Forms/FormWithUseRef";
 import FormWithUseState from "./components/Forms/FormWithUseState";
 import Like from "./components/Like/Like";
 import ListGroup from "./components/LİstGroup/ListGroup";
 import NavBar from "./components/NavBar";
-import FormWithUseForm from "./components/Forms/FormWithUseForm";
-import ExpenseList from "./expense-tracker/compnents/ExpenseList";
-import { fakeExpenses } from "./expense-tracker/expenses";
+import UserList from "./components/UserList";
 import ExpenseFilter from "./expense-tracker/compnents/ExpenseFilter";
 import ExpenseForm from "./expense-tracker/compnents/ExpenseForm";
-import axios, { AxiosError, CanceledError } from "axios";
-import apiClient from "./services/api-client";
-import type { User } from "./services/user-service";
-import UserService from "./services/user-service";
-import userService from "./services/user-service";
-import userServiceWithHttpGenericService from "./services/user-service-with-http-generic-service";
+import ExpenseList from "./expense-tracker/compnents/ExpenseList";
+import { fakeExpenses } from "./expense-tracker/expenses";
 
 export interface ExpenseFormData {
   description: string;
@@ -61,113 +56,7 @@ function App() {
     return expense.category === selectedCategory;
   });
 
-  const [users, setUsers] = useState<User[]>([]);
-  const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
 
-  useEffect(() => {
-    setLoading(true);
-    const { request, cancel } =
-      userServiceWithHttpGenericService.getAll<User>();
-    request
-      .then((res) => setUsers(res.data))
-      .catch((error: AxiosError) => {
-        if (error instanceof CanceledError) return;
-        setError(error.message);
-      })
-      .finally(() => setLoading(false));
-
-    return () => {
-      cancel();
-    };
-  }, []);
-
-  // Async and Await Version
-  // useEffect(() => {
-  //   const fetchUsers = async () => {
-  //     try {
-  //       const response = await axios.get<User[]>(
-  //         "https://jsonplaceholder.typicode.com/users"
-  //       );
-  //       setUsers(response.data);
-  //     } catch (error) {
-  //       const axiosError = error as AxiosError;
-  //       setError(axiosError.message);
-  //     }
-  //   };
-
-  //   fetchUsers();
-  // }, []);
-
-  const deleteUser = (userToDelete: User) => {
-    setUsers(users.filter((user) => user.id !== userToDelete.id));
-
-    userServiceWithHttpGenericService
-      .delete(userToDelete.id)
-      .then(() => {
-        console.log(`User with id ${userToDelete.id} deleted successfully.`);
-      })
-      .catch((error: AxiosError) => {
-        console.error(
-          `Failed to delete user with id ${userToDelete.id}:`,
-          error.message
-        );
-        setError(error.message);
-        setUsers((prevUsers) => [...prevUsers, userToDelete]);
-      });
-  };
-
-  const addUser = () => {
-    const originalUsers = [...users];
-    const newUser: User = {
-      id: 0,
-      name: "New User",
-      username: "newuser",
-      email: "2bPnM@example.com",
-    };
-    setUsers([newUser, ...users]);
-
-    userServiceWithHttpGenericService
-      .create(newUser)
-      .then((response) => {
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
-            user === newUser ? { ...response.data } : user
-          )
-        );
-      })
-      .catch((error: AxiosError) => {
-        console.error("Failed to add user:", error.message);
-        setError(error.message);
-        setUsers(originalUsers);
-      });
-  };
-
-  const updateUser = (userToUpdate: User) => {
-    const originalUsers = [...users];
-    const updatedUser = { ...userToUpdate, name: userToUpdate.name + "!" };
-    setUsers(
-      users.map((user) => (user.id === userToUpdate.id ? updatedUser : user))
-    );
-
-    userService
-      .updateUser(updatedUser)
-      .then((response) => {
-        setUsers((prevUsers) =>
-          prevUsers.map((user) =>
-            user.id === userToUpdate.id ? response.data : user
-          )
-        );
-      })
-      .catch((error: AxiosError) => {
-        console.error(
-          `Failed to update user with id ${userToUpdate.id}:`,
-          error.message
-        );
-        setError(error.message);
-        setUsers(originalUsers);
-      });
-  };
 
   return (
     <div className="container">
@@ -175,35 +64,7 @@ function App() {
       <section className="mb-5">
         <h2 className="mb-3">Users Section</h2>
         <p className="text-muted mb-3">Fetched Users from API</p>
-        {error && <p className="text-danger">{error}</p>}
-        {loading && <div className="spinner-border"></div>}
-        <button className="btn btn-primary mb-3" onClick={addUser}>
-          Add User
-        </button>
-        <ul className="list-group">
-          {users.map((user: User) => (
-            <li
-              key={user.id}
-              className="list-group-item d-flex justify-content-between mb-1"
-            >
-              {user.name}
-              <div className="d-flex justify-content-end align-items-center">
-                <button
-                  className="btn btn-outline-secondary mx-1"
-                  onClick={() => updateUser(user)}
-                >
-                  Update
-                </button>
-                <button
-                  className="btn btn-outline-danger"
-                  onClick={() => deleteUser(user)}
-                >
-                  Delete
-                </button>
-              </div>
-            </li>
-          ))}
-        </ul>
+        <UserList />
       </section>
 
       {/* Expense List Section */}
