@@ -29,8 +29,6 @@ const FormWithUseForm = () => {
     delayError: 100,
   });
 
-  console.log(errors);
-
   const onSubmit = (data: FormData) => {
     console.log(data);
   };
