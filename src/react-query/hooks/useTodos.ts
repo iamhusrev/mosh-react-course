@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
-import axios from "axios";
-import React from "react";
+import { CAHCE_EY_TODOS } from "../constants";
+import todoService from "../services/todoService";
 
 export interface Todo {
   id: number;
@@ -10,14 +10,15 @@ export interface Todo {
 }
 
 const useTodos = () => {
-  const fetchTodos = () =>
-    axios
-      .get<Todo[]>("https://jsonplaceholder.typicode.com/todos")
-      .then((res) => res.data);
-
   const query = useQuery<Todo[], Error>({
-    queryKey: ["todos"],
-    queryFn: fetchTodos,
+    queryKey: CAHCE_EY_TODOS,
+    queryFn: todoService.getAll,
+    retry: 3,
+    cacheTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 10, // 10 seconds
+    refetchOnWindowFocus: false,
+    refetchOnMount: false,
+    refetchOnReconnect: false,
   });
   return query;
 };
