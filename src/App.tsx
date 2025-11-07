@@ -1,20 +1,17 @@
 import "./App.css";
-import PostList from "./react-query/PostList";
-import PostListWithInfiniteQuery from "./react-query/PostListWithInfiniteQuery";
-import TodoForm from "./react-query/TodoForm";
-import TodoList from "./react-query/TodoList";
+import AuthProvider from "./state-management/AuthProvider";
+import HomePage from "./state-management/HomePage";
+import NavBar from "./state-management/NavBar";
+import TaskProvider from "./state-management/TaskProvider";
 
 function App() {
   return (
-    <div className="App">
-      <h1>React Query Todo List</h1>
-      {/* Other components can be added here */}
-      <TodoForm />
-      <TodoList />
-      {/* <TodoList /> */}
-      {/* <PostList /> */}
-      {/* <PostListWithInfiniteQuery /> */}
-    </div>
+    <AuthProvider>
+      <TaskProvider>
+        <NavBar />
+        <HomePage />
+      </TaskProvider>
+    </AuthProvider>
   );
 }
 
