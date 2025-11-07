@@ -1,0 +1,21 @@
+.btn {
+  padding: 8px 12px;
+  border-radius: 3px;
+  border: 0;
+}
+
+
+.btnPrimary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btnSecondary {
+  background-color: #6c757d;
+  color: white;
+}
+
+.btnDanger {
+  font-size: 1.25rem;
+  padding: 10px 16px;
+}

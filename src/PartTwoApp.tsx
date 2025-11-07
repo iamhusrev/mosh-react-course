@@ -4,7 +4,7 @@ import HomePage from "./state-management/HomePage";
 import NavBar from "./state-management/NavBar";
 import { TaskProvider } from "./state-management/tasks";
 
-function App() {
+function PartTwoApp() {
   return (
     <AuthProvider>
       <TaskProvider>
@@ -15,4 +15,4 @@ function App() {
   );
 }
 
-export default App;
+export default PartTwoApp;
