@@ -1,13 +1,10 @@
-import { useReducer, useState } from "react";
-import counterReducer from "./counterReducer";
 import useCounterStore from "./store";
 
 const Counter = () => {
   // const [value, setValue] = useState(0);
-
   // const [value, dispatch] = useReducer(counterReducer, 0);
 
-  const { count, increment, decrement, reset } = useCounterStore();
+  const { count, increment, reset } = useCounterStore();
 
   return (
     <div>
